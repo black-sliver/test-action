@@ -18,4 +18,5 @@ runs:
     - run: |
         pip install -r "${{ github.action_path }}/pack-checker/requirements.txt"
         python "${{ github.action_path }}/pack-checker/pack_checker.py" --help
+      shell: bash
 
