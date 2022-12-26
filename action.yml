@@ -4,7 +4,7 @@ description: "Playground"
 inputs:
   strict:
     description: 'true for strict mode, false for lax mode'
-    type: boolean
+    type: string
     required: true
     default: false
 
@@ -17,15 +17,17 @@ runs:
         cd "${{ github.action_path }}"
         [ -d pack-checker ] || git clone --branch v1 --depth 1 --recurse-submodules https://github.com/PopTracker/pack-checker.git
     - name: "Running pack-checker (lax)"
-      if: ${{ inputs.strict == false }}
+      if: ${{ inputs.strict == 'false' }}
       shell: bash
       run: |
+        echo "lax"
         pip install -r "${{ github.action_path }}/pack-checker/requirements.txt"
         python "${{ github.action_path }}/pack-checker/pack_checker.py" -b --help
     - name: "Running pack-checker (strict)"
-      if: ${{ inputs.strict == true }}
+      if: ${{ inputs.strict != 'false' }}
       shell: bash
       run: |
+        echo "strict"
         pip install -r "${{ github.action_path }}/pack-checker/requirements.txt"
         python "${{ github.action_path }}/pack-checker/pack_checker.py" -b --strict --help
     - run: ls -al; echo "$PWD"
