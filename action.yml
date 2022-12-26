@@ -4,21 +4,16 @@ description: "Playground"
 runs:
   using: "composite"
   steps:
-    - name: "Checkout pack-checker"
-      uses: actions/checkout@v3
-      with:
-        repository: PopTracker/pack-checker
-        path: .pack-checker
-        submodules: true
-    - name: "Move pack-checker"
-      run: mv .pack-checker "${{ github.action_path }}/pack-checker"
+    - name: "Checking out pack-checker"
       shell: bash
-    - run: ls -al ${{ github.action_path }}/pack-checker
+      run: |
+        cd "${{ github.action_path }}"
+        git clone --branch v1 --depth 1 --recurse-submodules https://github.com/PopTracker/pack-checker.git
+    - name: "Running pack-checker"
       shell: bash
-    - run: |
+      run: |
         pip install -r "${{ github.action_path }}/pack-checker/requirements.txt"
         python "${{ github.action_path }}/pack-checker/pack_checker.py" --help
-      shell: bash
     - run: ls -al; echo "$PWD"
       shell: bash
 
